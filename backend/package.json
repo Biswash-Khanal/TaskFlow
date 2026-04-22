@@ -4,5 +4,12 @@
     "express": "^5.2.1",
     "kysely": "^0.28.16",
     "pg": "^8.20.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "typescript": "^6.0.3"
+  },
+  "scripts": {
+    "dev": "bun --watch run src/index.ts"
   }
 }

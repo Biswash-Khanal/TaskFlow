@@ -7,10 +7,10 @@ import {
   PostgresDialect,
   FileMigrationProvider,
 } from "kysely";
-import { Database } from "../types";
+import { DB } from "../types";
 
 function createMigrator() {
-  const db = new Kysely<Database>({
+  const db = new Kysely<DB>({
     dialect: new PostgresDialect({
       pool: new Pool({
         connectionString: process.env.DATABASE_URL,

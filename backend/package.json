@@ -2,12 +2,14 @@
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "kysely": "^0.28.16",
     "pg": "^8.20.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/pg": "^8.20.0",
+    "kysely-codegen": "^0.20.0",
     "typescript": "^6.0.3"
   },
   "scripts": {

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { db } from "../db/database";
-import { AppError } from "../utils/AppError";
-import { errorResponse, successResponse } from "../utils/ResponseHelpers";
+import { db } from "../../db/database";
+import { AppError } from "../../utils/AppError";
+import { errorResponse, successResponse } from "../../utils/ResponseHelpers";
 
 export async function register(
   req: Request,

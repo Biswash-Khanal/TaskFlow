@@ -3,20 +3,19 @@
  * Please do not edit it manually.
  */
 
-import type { ColumnType, GeneratedAlways } from "kysely";
+import type { ColumnType } from "kysely";
 
-export type Generated<T> =
-  T extends ColumnType<infer S, infer I, infer U>
-    ? ColumnType<S, I | undefined, U>
-    : ColumnType<T, T | undefined, T>;
+export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
+  ? ColumnType<S, I | undefined, U>
+  : ColumnType<T, T | undefined, T>;
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface Users {
-  id: Generated<string>;
-  avatar_initials: string;
+  avatar_initials: string | null;
   created_at: Generated<Timestamp>;
   email: string;
+  id: Generated<string>;
   name: string;
   password_hash: string;
   updated_at: Generated<Timestamp>;

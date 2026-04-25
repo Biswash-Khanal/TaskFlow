@@ -9,6 +9,7 @@
         "jsonwebtoken": "^9.0.3",
         "kysely": "^0.28.16",
         "pg": "^8.20.0",
+        "zod": "^4.3.6",
       },
       "devDependencies": {
         "@types/express": "^5.0.6",

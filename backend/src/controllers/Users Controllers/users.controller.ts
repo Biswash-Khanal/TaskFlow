@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { db } from "../../db/database";
 import { AppError } from "../../utils/AppError";
 import { errorResponse, successResponse } from "../../utils/ResponseHelpers";
+import { safeParse } from "zod";
+import { userSchema } from "../../schemas/validators/users.validators";
 
 export async function register(
   req: Request,
@@ -11,10 +13,13 @@ export async function register(
   try {
     const body = req.body;
 
-    const { name, email, password } = body;
-    if (!name || !email || !password) {
-      return errorResponse("Missing Name OR E-mail OR Password", 400);
+    const parsedData = safeParse(userSchema, body);
+
+    if (!parsedData.success) {
+      return errorResponse(parsedData.error.message);
     }
+
+    const { name, email, password } = parsedData.data;
 
     let duplicateEntry = await db
       .selectFrom("Users")

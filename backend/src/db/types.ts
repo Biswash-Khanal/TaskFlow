@@ -3,23 +3,23 @@
  * Please do not edit it manually.
  */
 
-import type { ColumnType } from "kysely";
+import type { ColumnType, Insertable, Selectable, Updateable } from "kysely";
 
-export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
-  ? ColumnType<S, I | undefined, U>
-  : ColumnType<T, T | undefined, T>;
-
-export type Timestamp = ColumnType<Date, Date | string, Date | string>;
+export type Generated<T> = ColumnType<T, undefined, undefined>;
 
 export interface Users {
   avatar_initials: string | null;
-  created_at: Generated<Timestamp>;
+  created_at: Generated<Date>;
   email: string;
   id: Generated<string>;
   name: string;
   password_hash: string;
-  updated_at: Generated<Timestamp>;
+  updated_at: Generated<Date>;
 }
+
+export type UserSelect = Selectable<Users>;
+export type UserNew = Insertable<Users>;
+export type UserUpdate = Updateable<Users>;
 
 export interface DB {
   Users: Users;

@@ -10,6 +10,7 @@ export function schemaValidator<T>(validationSchema: z.ZodType<T>) {
         const errorMessage = z.prettifyError(parsedData.error);
         errorResponse(errorMessage);
       }
+      req.body = parsedData.data;
       next();
     } catch (error) {
       next(error);

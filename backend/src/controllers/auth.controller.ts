@@ -1,9 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { db } from "../db/database";
-import { AppError } from "../utils/AppError";
 import { errorResponse, successResponse } from "../utils/ResponseHelpers";
-import { safeParse } from "zod";
-import { userSchema } from "../schemas/validators/users.validators";
+
+import {
+  createUser,
+  findUserByEmail,
+} from "../services/auth.services";
+import { compare, hash } from "bcryptjs";
+import { UserSelect } from "../db/types";
 
 export async function register(
   req: Request,
@@ -11,42 +14,46 @@ export async function register(
   next: NextFunction,
 ) {
   try {
+    //get the post request data, parsed as json already by express.json
     const body = req.body;
 
+    //the structure is validated alrady throuhg the middleware so we are safe to destructure here
     const { name, email, password } = body;
 
-    let duplicateEntry = await db
-      .selectFrom("Users")
-      .selectAll()
-      .where("Users.email", "=", email)
-      .executeTakeFirst();
+    const password_hash = await hash(password, 10);
 
-    if (duplicateEntry) {
-      return errorResponse("Record with same E-mail already Exists!", 400);
-    }
-
-    duplicateEntry = await db
-      .selectFrom("Users")
-      .selectAll()
-      .where("Users.name", "=", name)
-      .executeTakeFirst();
-
-    if (duplicateEntry) {
-      return errorResponse("Username Taken", 400);
-    }
-
-    const result = await db
-      .insertInto("Users")
-      .values({
-        name: name,
-        email: email,
-        password_hash: password,
-        avatar_initials: "",
-      })
-      .returningAll()
-      .executeTakeFirst();
+    const result = await createUser({ name, email, password_hash });
 
     return successResponse(res, result);
+  } catch (error) {
+    next(error);
+  }
+}
+export async function login(req: Request, res: Response, next: NextFunction) {
+  try {
+    //get the post request data, parsed as json already by express.json
+    const body = req.body;
+
+    //the structure is validated alrady throuhg the middleware so we are safe to destructure here
+    const { email, password } = body;
+
+    const user: UserSelect | null = await findUserByEmail(email);
+
+    if (!user) {
+      errorResponse(
+        "Account with this E-mail doesnt Exist. Please Register instesd!",
+      );
+    }
+
+    const passwordMatch = await compare(password, user.password_hash);
+
+    if (!passwordMatch) {
+      errorResponse("Incorrect Password!");
+    }
+
+    
+
+    return successResponse(res, {});
   } catch (error) {
     next(error);
   }

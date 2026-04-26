@@ -2,11 +2,11 @@ import { Router } from "express";
 import { register } from "../controllers/auth.controller";
 import { schemaValidator } from "../middleware/schemaValidator";
 
-import { userSchema } from "../schemas/validators/users.validators";
+import { registerSchema } from "../schemas/validators/auth.validators";
 
 const authRouter = Router();
 
-authRouter.post("/register", schemaValidator(userSchema), register);
+authRouter.post("/register", schemaValidator(registerSchema), register);
 authRouter.post("/login", register);
 
 export default authRouter;

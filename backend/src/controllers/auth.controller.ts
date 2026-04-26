@@ -51,11 +51,11 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     }
 
     const token = jwt.sign({ userId: user.id }, env.jwtSecret, {
-      expiresIn: 1 * 60 * 60 * 100,
+      expiresIn: "1h",
     });
 
     res.cookie("auth", token, {
-      maxAge: 1 * 60 * 60 * 100,
+      maxAge: 1 * 60 * 60 * 1000,
       httpOnly: true,
       secure: env.nodeEnv === "production",
     });

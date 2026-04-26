@@ -1,12 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { errorResponse, successResponse } from "../utils/ResponseHelpers";
+import jwt from "jsonwebtoken";
 
-import {
-  createUser,
-  findUserByEmail,
-} from "../services/auth.services";
+import { createUser, findUserByEmail } from "../services/auth.services";
 import { compare, hash } from "bcryptjs";
 import { UserSelect } from "../db/types";
+import { env } from "../utils/env";
 
 export async function register(
   req: Request,
@@ -51,9 +50,17 @@ export async function login(req: Request, res: Response, next: NextFunction) {
       errorResponse("Incorrect Password!");
     }
 
-    
+    const token = jwt.sign({ userId: user.id }, env.jwtSecret, {
+      expiresIn: 1 * 60 * 60 * 100,
+    });
 
-    return successResponse(res, {});
+    res.cookie("auth", token, {
+      maxAge: 1 * 60 * 60 * 100,
+      httpOnly: true,
+      secure: env.nodeEnv === "production",
+    });
+
+    return successResponse(res, { userId: user.id });
   } catch (error) {
     next(error);
   }

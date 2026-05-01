@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import z from "zod";
-import { errorResponse } from "../utils/ResponseHelpers";
+import { ResponseHelper } from "../utils/ResponseHelpers";
 
 export function schemaValidator<T>(validationSchema: z.ZodType<T>) {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -8,9 +8,9 @@ export function schemaValidator<T>(validationSchema: z.ZodType<T>) {
       const parsedData = validationSchema.safeParse(req.body);
       if (!parsedData.success) {
         const errorMessage = z.prettifyError(parsedData.error);
-        errorResponse(errorMessage);
+        ResponseHelper.error.rejected("Validation Schema Rejected!");
+        req.body = parsedData.data;
       }
-      req.body = parsedData.data;
       next();
     } catch (error) {
       next(error);

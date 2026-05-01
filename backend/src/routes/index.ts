@@ -6,6 +6,6 @@ import { authenticate } from "../middleware/authenticator";
 const router = Router();
 
 router.use("/auth", authRouter);
-router.use("/users", authenticate, usersRouter);
+router.use("/users", usersRouter);
 
 export default router;

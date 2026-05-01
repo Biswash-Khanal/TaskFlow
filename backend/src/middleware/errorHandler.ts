@@ -8,13 +8,21 @@ export async function errorHandler(
   next: NextFunction,
 ) {
   if (err instanceof AppError) {
+    console.log(err);
     return res
       .status(err.statusCode)
-      .json({ success: false, message: err.message });
+      .json({ success: false, message: err.message, data: null });
   }
   if (err instanceof Error) {
-    return res.status(500).json({ success: false, message: err.message });
-  }
+    console.log(err);
 
-  return res.status(501).json({ success: false, message: String(err) });
+    return res
+      .status(500)
+      .json({ success: false, message: err.message, data: null });
+  }
+  console.log(err);
+
+  return res
+    .status(501)
+    .json({ success: false, message: String(err), data: null });
 }

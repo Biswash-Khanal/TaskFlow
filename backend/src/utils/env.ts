@@ -14,3 +14,4 @@ export const env = {
   jwtSecret: requireEnv("JWT_SECRET_KEY"),
   nodeEnv: requireEnv("NODE_ENV"),
 };
+

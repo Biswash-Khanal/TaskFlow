@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-import { createUser, findUserByEmail } from "../services/auth.services";
+import {
+  createUser,
+  doesUserExist,
+  findUserByEmailForLogin,
+} from "../services/auth.services";
 import { compare, hash } from "bcryptjs";
 import { UserSelect } from "../db/types";
 import { env } from "../utils/env";
@@ -14,21 +18,18 @@ export async function register(
 ) {
   try {
     //get the post request data, parsed as json already by express.json
-    console.log("register hit 1");
     const body = req.body;
 
     //the structure is validated alrady throuhg the middleware so we are safe to destructure here
     const { name, email, password } = body;
 
-    const userExists = await findUserByEmail(email);
-    console.log("register hit 2");
+    const userExists = await doesUserExist("email", email);
 
     if (userExists) {
       return ResponseHelper.error.conflict(
         "Account with this email already exists!",
       );
     }
-    console.log("register hit 3");
 
     const password_hash = await hash(password, 10);
 
@@ -51,7 +52,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     //the structure is validated alrady throuhg the middleware so we are safe to destructure here
     const { email, password } = body;
 
-    const user: UserSelect | null = await findUserByEmail(email);
+    const user = await findUserByEmailForLogin(email);
 
     if (!user) {
       return ResponseHelper.error.notFound(
@@ -80,6 +81,8 @@ export async function login(req: Request, res: Response, next: NextFunction) {
       name: user.name,
       email: user.email,
       avatar_initials: user.avatar_initials,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
     };
 
     return ResponseHelper.success.authorized(

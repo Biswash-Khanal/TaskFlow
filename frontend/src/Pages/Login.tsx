@@ -4,8 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "../components/ui/FormInput";
 import { LoginSchema, type LoginData } from "../schemas/LoginSchema";
 import Button from "../components/ui/Button";
-import toast from "react-hot-toast";
-import { axiosInstance } from "../lib/axios";
 import { genericSubmitHandler } from "../lib/formSubmitHandler";
 
 const LoginPage = () => {

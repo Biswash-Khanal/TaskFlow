@@ -6,7 +6,7 @@ const Navbar = () => {
       <ul className="flex justify-around w-full">
         {[
           { name: "Register", path: "/register" },
-          { name: "Login", path: "/Login" },
+          { name: "Login", path: "/login" },
         ].map((link) => {
           return (
             <li key={link.name}>

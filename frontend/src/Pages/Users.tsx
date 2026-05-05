@@ -1,5 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
+import toast from "react-hot-toast";
+import type { AxiosError } from "axios";
+import type { ApiResponse } from "../lib/formSubmitHandler";
+import { logout } from "../lib/logout";
 
 interface Users {
   id: string;
@@ -20,10 +24,24 @@ const UsersPage = () => {
   });
 
   if (isError) {
-    console.error(error);
+    const err = error as AxiosError<ApiResponse>;
+
+    if (err.response?.data) {
+      toast.error(err.response.data.message);
+    } else {
+      toast.error(
+        "No response from API, please contact the server administrator",
+      );
+    }
+
+    return (
+      <>
+        <div>Error...</div>
+      </>
+    );
   }
 
-  if (isPending || isError) {
+  if (isPending) {
     return <div>Loading....</div>;
   }
 
@@ -37,6 +55,7 @@ const UsersPage = () => {
           >{`id:${user.id}  name:${user.name}  email:${user.email}  avatar_initials:${user.avatar_initials}  created_at:${user.created_at}`}</li>
         ))}
       </ul>
+      <button onClick={logout}>Logout</button>
     </>
   );
 };

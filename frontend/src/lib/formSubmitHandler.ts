@@ -2,7 +2,7 @@ import type { AxiosError } from "axios";
 import { axiosInstance } from "./axios";
 import toast from "react-hot-toast";
 
-type ApiResponse<T = any> =
+export type ApiResponse<T = any> =
   | {
       success: true;
       data: T;

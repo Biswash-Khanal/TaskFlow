@@ -3,9 +3,6 @@ import { registerSchema, type RegisterData } from "../schemas/RegisterSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "../components/ui/FormInput";
 import Button from "../components/ui/Button";
-import toast from "react-hot-toast";
-import { AxiosError } from "axios";
-import { axiosInstance } from "../lib/axios";
 import { genericSubmitHandler } from "../lib/formSubmitHandler";
 
 const RegisterPage = () => {

@@ -94,3 +94,12 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     next(error);
   }
 }
+
+export async function logout(req: Request, res: Response, next: NextFunction) {
+  try {
+    res.clearCookie("auth");
+    return ResponseHelper.success.accepted(res, {}, "Logged out Successfully");
+  } catch (error) {
+    next(error);
+  }
+}

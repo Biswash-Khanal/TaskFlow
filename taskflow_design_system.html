@@ -1,0 +1,386 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { background: transparent; }
+
+  .root {
+    font-family: 'Geist', var(--font-sans), sans-serif;
+    color: var(--color-text-primary);
+    padding: 0 0 2rem;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin: 2rem 0 0.75rem;
+    font-weight: 500;
+  }
+
+  /* ── PALETTE ── */
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .swatch-group { display: flex; flex-direction: column; gap: 4px; }
+
+  .swatch-row { display: flex; height: 36px; border-radius: 6px; overflow: hidden; }
+
+  .swatch {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    padding: 3px 5px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 8px;
+  }
+
+  .swatch-name {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-top: 3px;
+  }
+
+  /* ── FONT PAIRING ── */
+  .font-card {
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 10px;
+  }
+
+  .font-tag {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 6px;
+  }
+
+  .font-display-geist {
+    font-family: 'Geist', sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--color-text-primary);
+    letter-spacing: -0.02em;
+  }
+
+  .font-body-geist {
+    font-family: 'Geist', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-top: 6px;
+  }
+
+  .font-mono-geist {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    color: #6e6af0;
+    background: rgba(110,106,240,0.08);
+    border: 0.5px solid rgba(110,106,240,0.2);
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-top: 8px;
+    display: inline-block;
+  }
+
+  .pair-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  /* ── SEMANTIC ── */
+  .semantic-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .semantic-chip {
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .chip-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+  .chip-hex   { font-family: 'Geist Mono', monospace; font-size: 10px; opacity: 0.7; }
+
+  /* ── UI PREVIEW ── */
+  .ui-preview {
+    background: #17171a;
+    border: 0.5px solid #2a2a32;
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .preview-btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .pbtn {
+    font-family: 'Geist', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 6px 14px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .pbtn-primary  { background: #6e6af0; color: #fff; }
+  .pbtn-secondary{ background: #26262c; color: #f0f0f5; border: 0.5px solid #3a3a45; }
+  .pbtn-danger   { background: #f04e4e; color: #fff; }
+  .pbtn-ghost    { background: transparent; color: #9898a8; border: 0.5px solid #2a2a32; }
+
+  .preview-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+  .badge {
+    font-family: 'Geist', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    border-radius: 999px;
+    padding: 3px 9px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .dot { width: 6px; height: 6px; border-radius: 50%; }
+
+  .preview-input-row { display: flex; gap: 8px; }
+  .preview-input {
+    flex: 1;
+    background: #17171a;
+    border: 0.5px solid #3a3a45;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-family: 'Geist', sans-serif;
+    font-size: 12px;
+    color: #f0f0f5;
+    outline: none;
+  }
+  .preview-input::placeholder { color: #5e5e6e; }
+  .preview-input.focused { border-color: #6e6af0; box-shadow: 0 0 0 3px rgba(110,106,240,0.2); }
+
+  .preview-card {
+    background: #1f1f24;
+    border: 0.5px solid #2a2a32;
+    border-radius: 8px;
+    padding: 10px 12px;
+    border-left: 3px solid #f07a4e;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .card-title { font-family: 'Geist', sans-serif; font-size: 12px; font-weight: 500; color: #f0f0f5; }
+  .card-meta  { font-family: 'Geist', sans-serif; font-size: 10px; color: #9898a8; display: flex; gap: 8px; }
+
+  .avatar-sm {
+    width: 18px; height: 18px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 8px; font-weight: 600; font-family: 'Geist', sans-serif;
+  }
+</style>
+
+<div class="root">
+
+  <p class="section-label">Color Palette — Base</p>
+
+  <div class="palette-grid">
+
+    <div class="swatch-group">
+      <div class="swatch-row">
+        <div class="swatch" style="background:#0d0d0f; color:#5e5e6e;">bg-base</div>
+        <div class="swatch" style="background:#17171a; color:#5e5e6e;">surface</div>
+        <div class="swatch" style="background:#1f1f24; color:#9898a8;">overlay</div>
+        <div class="swatch" style="background:#26262c; color:#9898a8;">hover</div>
+        <div class="swatch" style="background:#2e2e36; color:#9898a8;">active</div>
+      </div>
+      <p class="swatch-name">Backgrounds</p>
+    </div>
+
+    <div class="swatch-group">
+      <div class="swatch-row">
+        <div class="swatch" style="background:#2a2a32; color:#5e5e6e;">subtle</div>
+        <div class="swatch" style="background:#3a3a45; color:#9898a8;">default</div>
+        <div class="swatch" style="background:#52525e; color:#f0f0f5;">strong</div>
+      </div>
+      <p class="swatch-name">Borders</p>
+    </div>
+
+    <div class="swatch-group">
+      <div class="swatch-row">
+        <div class="swatch" style="background:#f0f0f5; color:#52525e;">primary</div>
+        <div class="swatch" style="background:#9898a8; color:#1f1f24;">secondary</div>
+        <div class="swatch" style="background:#5e5e6e; color:#0d0d0f;">muted</div>
+      </div>
+      <p class="swatch-name">Text</p>
+    </div>
+
+    <div class="swatch-group">
+      <div class="swatch-row">
+        <div class="swatch" style="background:#5b57e8; color:#c8c6ff;">700</div>
+        <div class="swatch" style="background:#6e6af0; color:#fff;">accent</div>
+        <div class="swatch" style="background:#7b77f5; color:#fff;">hover</div>
+        <div class="swatch" style="background:#a09df9; color:#17171a;">300</div>
+        <div class="swatch" style="background:rgba(110,106,240,0.15); color:#7b77f5; font-size:7px;">muted bg</div>
+      </div>
+      <p class="swatch-name">Accent — #6E6AF0</p>
+    </div>
+
+    <div class="swatch-group">
+      <div class="swatch-row">
+        <div class="swatch" style="background:#c0301f; color:#fca;">700</div>
+        <div class="swatch" style="background:#f04e4e; color:#fff;">urgent</div>
+        <div class="swatch" style="background:#f07a4e; color:#fff;">high</div>
+        <div class="swatch" style="background:#f0c44e; color:#6b4a00;">medium</div>
+        <div class="swatch" style="background:#4ea8f0; color:#fff;">low</div>
+      </div>
+      <p class="swatch-name">Priority</p>
+    </div>
+
+    <div class="swatch-group">
+      <div class="swatch-row">
+        <div class="swatch" style="background:#4ecf7a; color:#0d3020;">success</div>
+        <div class="swatch" style="background:#f0c44e; color:#6b4a00;">warning</div>
+        <div class="swatch" style="background:#f04e4e; color:#fff;">danger</div>
+        <div class="swatch" style="background:#4ea8f0; color:#fff;">info</div>
+      </div>
+      <p class="swatch-name">Semantic</p>
+    </div>
+
+  </div>
+
+  <p class="section-label">Typography</p>
+
+  <div class="pair-row">
+    <div class="font-card">
+      <p class="font-tag">Primary — Geist</p>
+      <p class="font-display-geist">TaskFlow</p>
+      <p class="font-body-geist">Manage work, shipped fast. Real-time collaboration for modern teams.</p>
+    </div>
+    <div class="font-card">
+      <p class="font-tag">Mono — Geist Mono</p>
+      <p class="font-body-geist" style="margin-bottom:6px;">Used for: task IDs, timestamps, code, env vars</p>
+      <p class="font-mono-geist">TF-042 &nbsp;·&nbsp; updated 2h ago</p>
+      <br>
+      <p class="font-mono-geist">DATABASE_URL=postgres://...</p>
+    </div>
+  </div>
+
+  <div class="font-card" style="background:var(--color-background-secondary);">
+    <p class="font-tag">Type Scale</p>
+    <div style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
+      <div style="display:flex; align-items:baseline; gap:12px;">
+        <span style="font-family:'Geist',sans-serif; font-size:28px; font-weight:500; color:var(--color-text-primary); letter-spacing:-0.02em; line-height:1;">Aa</span>
+        <span style="font-size:11px; color:var(--color-text-tertiary); font-family:'Geist Mono',monospace;">28px / 500 — Page title</span>
+      </div>
+      <div style="display:flex; align-items:baseline; gap:12px;">
+        <span style="font-family:'Geist',sans-serif; font-size:20px; font-weight:500; color:var(--color-text-primary); letter-spacing:-0.01em; line-height:1;">Aa</span>
+        <span style="font-size:11px; color:var(--color-text-tertiary); font-family:'Geist Mono',monospace;">20px / 500 — Section heading</span>
+      </div>
+      <div style="display:flex; align-items:baseline; gap:12px;">
+        <span style="font-family:'Geist',sans-serif; font-size:14px; font-weight:400; color:var(--color-text-primary); line-height:1;">Aa</span>
+        <span style="font-size:11px; color:var(--color-text-tertiary); font-family:'Geist Mono',monospace;">14px / 400 — Body default</span>
+      </div>
+      <div style="display:flex; align-items:baseline; gap:12px;">
+        <span style="font-family:'Geist',sans-serif; font-size:13px; font-weight:400; color:var(--color-text-secondary); line-height:1;">Aa</span>
+        <span style="font-size:11px; color:var(--color-text-tertiary); font-family:'Geist Mono',monospace;">13px / 400 — Labels, table cells</span>
+      </div>
+      <div style="display:flex; align-items:baseline; gap:12px;">
+        <span style="font-family:'Geist',sans-serif; font-size:11px; font-weight:500; color:var(--color-text-tertiary); text-transform:uppercase; letter-spacing:0.1em; line-height:1;">AA</span>
+        <span style="font-size:11px; color:var(--color-text-tertiary); font-family:'Geist Mono',monospace;">11px / 500 / uppercase — Section labels</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="section-label">Live UI Preview (dark surface)</p>
+
+  <div class="ui-preview">
+
+    <div class="preview-btn-row">
+      <button class="pbtn pbtn-primary">Create task</button>
+      <button class="pbtn pbtn-secondary">Filter ▾</button>
+      <button class="pbtn pbtn-ghost">Cancel</button>
+      <button class="pbtn pbtn-danger">Delete</button>
+    </div>
+
+    <div class="preview-badges">
+      <span class="badge" style="background:rgba(240,78,78,0.12); color:#f04e4e;">
+        <span class="dot" style="background:#f04e4e;"></span> Urgent
+      </span>
+      <span class="badge" style="background:rgba(240,122,78,0.12); color:#f07a4e;">
+        <span class="dot" style="background:#f07a4e;"></span> High
+      </span>
+      <span class="badge" style="background:rgba(240,196,78,0.12); color:#d4a000;">
+        <span class="dot" style="background:#f0c44e;"></span> Medium
+      </span>
+      <span class="badge" style="background:rgba(78,168,240,0.12); color:#4ea8f0;">
+        <span class="dot" style="background:#4ea8f0;"></span> Low
+      </span>
+      <span class="badge" style="background:rgba(78,207,122,0.12); color:#4ecf7a;">Done</span>
+      <span class="badge" style="background:rgba(110,106,240,0.15); color:#a09df9;">In Review</span>
+    </div>
+
+    <div class="preview-input-row">
+      <input class="preview-input focused" placeholder="Task title..." value="Fix login validation">
+      <input class="preview-input" placeholder="Search tasks...">
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      <div class="preview-card" style="border-left-color:#f04e4e;">
+        <div class="card-title">Fix refresh token expiry edge case</div>
+        <div class="card-meta">
+          <span class="badge" style="background:rgba(240,78,78,0.12); color:#f04e4e; font-size:9px; padding:2px 7px;">
+            <span class="dot" style="background:#f04e4e; width:5px; height:5px;"></span> Urgent
+          </span>
+          <span style="display:flex; align-items:center; gap:4px;">
+            <span class="avatar-sm" style="background:#3534a8; color:#a09df9;">BK</span>
+            Biswash
+          </span>
+          <span>Dec 12</span>
+        </div>
+      </div>
+      <div class="preview-card" style="border-left-color:#6e6af0;">
+        <div class="card-title">Implement Socket.io room strategy</div>
+        <div class="card-meta">
+          <span class="badge" style="background:rgba(110,106,240,0.15); color:#a09df9; font-size:9px; padding:2px 7px;">In Progress</span>
+          <span style="display:flex; align-items:center; gap:4px;">
+            <span class="avatar-sm" style="background:#0d4a6e; color:#4ea8f0;">AL</span>
+            Alice
+          </span>
+          <span>Dec 14</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+      <span class="badge" style="background:rgba(78,207,122,0.12); color:#4ecf7a; border-radius:4px;">
+        ✓ Saved
+      </span>
+      <span class="badge" style="background:rgba(240,78,78,0.12); color:#f04e4e; border-radius:4px;">
+        ✕ Connection lost
+      </span>
+      <span class="badge" style="background:rgba(240,196,78,0.12); color:#d4a000; border-radius:4px;">
+        ⚡ Reconnecting...
+      </span>
+    </div>
+
+  </div>
+
+</div>

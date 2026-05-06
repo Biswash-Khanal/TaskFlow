@@ -1,6 +1,7 @@
 // ResponseHelper.ts
 import { Response } from "express";
 import { AppError } from "./AppError";
+import { ErrorCode } from "../shared/types/ErrorCode";
 
 export class ResponseHelper {
   // Grouped success helpers
@@ -37,35 +38,35 @@ export class ResponseHelper {
   // Grouped error helpers
   static error = {
     generic(message = "An Error Occurred", statusCode = 500): never {
-      throw new AppError(message, statusCode);
+      throw new AppError(message, statusCode, ErrorCode.INTERNAL_ERROR);
     },
 
     notFound(message = "Resource not found"): never {
-      throw new AppError(message, 404);
+      throw new AppError(message, 404, ErrorCode.NOT_FOUND);
     },
 
     unauthorized(message = "Unauthorized"): never {
-      throw new AppError(message, 401);
+      throw new AppError(message, 401, ErrorCode.UNAUTHORIZED);
     },
 
     forbidden(message = "Forbidden"): never {
-      throw new AppError(message, 403);
+      throw new AppError(message, 403, ErrorCode.FORBIDDEN);
     },
 
     timeout(message = "Request timed out"): never {
-      throw new AppError(message, 408);
+      throw new AppError(message, 408, ErrorCode.TIMEOUT);
     },
 
     conflict(message = "Conflict"): never {
-      throw new AppError(message, 409);
+      throw new AppError(message, 409, ErrorCode.CONFLICT);
     },
 
     badRequest(message = "Bad request"): never {
-      throw new AppError(message, 400);
+      throw new AppError(message, 400, ErrorCode.BAD_REQUEST);
     },
 
     rejected(message = "Request rejected"): never {
-      throw new AppError(message, 422); // Unprocessable Entity
+      throw new AppError(message, 422, ErrorCode.UNPROCESSABLE_ENTITY);
     },
   };
 }

@@ -13,7 +13,8 @@ export async function doesUserExist(field: "id" | "email", value: string) {
       "created_at",
       "updated_at",
     ])
-    .where(field, "=", value);
+    .where(field, "=", value)
+    .executeTakeFirst();
 
   return existingUser ? true : false;
 }

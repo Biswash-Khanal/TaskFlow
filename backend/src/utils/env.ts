@@ -11,7 +11,7 @@ function requireEnv(key: string): string {
 
 export const env = {
   databaseUrl: requireEnv("DATABASE_URL"),
-  jwtSecret: requireEnv("JWT_SECRET_KEY"),
+  accessJwtSecret: requireEnv("ACCESS_JWT_SECRET_KEY"),
+  refreshJwtSecret: requireEnv("REFRESH_JWT_SECRET_KEY"),
   nodeEnv: requireEnv("NODE_ENV"),
 };
-

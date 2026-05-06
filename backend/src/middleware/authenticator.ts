@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import jwt, { JsonWebTokenError } from "jsonwebtoken";
+import jwt, { JsonWebTokenError, JwtPayload } from "jsonwebtoken";
 import { env } from "../utils/env";
+
+export interface authPayload extends JwtPayload {
+  userId: string;
+}
 export async function authenticate(
   req: Request,
   res: Response,
@@ -9,8 +13,12 @@ export async function authenticate(
   try {
     const cookies = req.cookies;
 
-    jwt.verify(cookies.auth, env.jwtSecret);
+    const decodedJWT = jwt.verify(
+      cookies.auth,
+      env.accessJwtSecret,
+    ) as authPayload;
 
+    req.userId = decodedJWT.userId;
     next();
   } catch (error) {
     next(error);

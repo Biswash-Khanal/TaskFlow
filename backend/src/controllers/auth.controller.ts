@@ -1,15 +1,18 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 import {
   createUser,
   doesUserExist,
   findUserByEmailForLogin,
+  getUserById,
 } from "../services/auth.services";
 import { compare, hash } from "bcryptjs";
 import { UserSelect } from "../db/types";
 import { env } from "../utils/env";
 import { ResponseHelper } from "../utils/ResponseHelpers";
+import { StringValidation } from "zod/v3";
+import { authPayload } from "../middleware/authenticator";
 
 export async function register(
   req: Request,
@@ -66,12 +69,20 @@ export async function login(req: Request, res: Response, next: NextFunction) {
       return ResponseHelper.error.rejected("Incorrect Password!");
     }
 
-    const token = jwt.sign({ userId: user.id }, env.jwtSecret, {
-      expiresIn: "1h",
+    const Accesstoken = jwt.sign({ userId: user.id }, env.accessJwtSecret, {
+      expiresIn: "15m",
+    });
+    const RefreshToken = jwt.sign({ userId: user.id }, env.refreshJwtSecret, {
+      expiresIn: "7d",
     });
 
-    res.cookie("auth", token, {
-      maxAge: 1 * 60 * 60 * 1000,
+    res.cookie("auth", Accesstoken, {
+      maxAge: 15 * 60 * 1000,
+      httpOnly: true,
+      secure: env.nodeEnv === "production",
+    });
+    res.cookie("refreshAuth", RefreshToken, {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
       secure: env.nodeEnv === "production",
     });
@@ -98,7 +109,55 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 export async function logout(req: Request, res: Response, next: NextFunction) {
   try {
     res.clearCookie("auth");
+    res.clearCookie("refreshAuth");
     return ResponseHelper.success.accepted(res, {}, "Logged out Successfully");
+  } catch (error) {
+    next(error);
+  }
+}
+export async function refresh(req: Request, res: Response, next: NextFunction) {
+  try {
+    const verifiedRefreshToken = jwt.verify(
+      req.cookies.refreshAuth,
+      env.refreshJwtSecret,
+    ) as authPayload;
+
+    const Accesstoken = jwt.sign(
+      { userId: verifiedRefreshToken.userId },
+      env.accessJwtSecret,
+      {
+        expiresIn: "15m",
+      },
+    );
+
+    res.clearCookie("auth");
+    res.cookie("auth", Accesstoken, {
+      maxAge: 15 * 60 * 1000,
+      httpOnly: true,
+      secure: env.nodeEnv === "production",
+    });
+
+    return ResponseHelper.success.accepted(
+      res,
+      "Refreshed access token successfully!",
+    );
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getMe(req: Request, res: Response, next: NextFunction) {
+  try {
+    const userId = req.userId;
+    if (!userId) {
+      return ResponseHelper.error.unauthorized("Not authorized");
+    }
+    const result = await getUserById(userId);
+    return ResponseHelper.success.authorized(
+      res,
+      result,
+      "User data retrieved successfully",
+    );
   } catch (error) {
     next(error);
   }

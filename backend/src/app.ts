@@ -1,10 +1,16 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import routes from "./routes";
 import { errorHandler } from "./middleware/errorHandler";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
 const app = express();
+
+app.get("/", (req: Request, res: Response) =>
+  res.send(`
+  <h1>Hi Welcome to the TaskFlow API</h1>
+  `),
+);
 
 app.use(express.json());
 app.use(cookieParser());

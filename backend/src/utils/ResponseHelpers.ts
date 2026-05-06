@@ -7,7 +7,7 @@ export class ResponseHelper {
   // Grouped success helpers
   static success = {
     generic<T>(res: Response, message: string, data: T, statusCode = 200) {
-      return res.status(statusCode).json({ success: true, message, data });
+      return res.status(statusCode).json({ message, data });
     },
 
     created<T>(res: Response, data: T, message = "Resource created") {

@@ -32,28 +32,32 @@ const RegisterPage = () => {
         required={true}
         error={errors.name?.message}
         type="text"
+        placeholder="doeJohn69"
         {...register("name")}
       />
       <FormInput
         label="E-mail"
         error={errors.email?.message}
         type="email"
+        placeholder="johndoe123@example.com"
         {...register("email")}
       />
       <FormInput
         label="Password"
         error={errors.password?.message}
         type="password"
+        placeholder="type a strong password"
         {...register("password")}
       />
       <FormInput
         label="Confirm Password"
         error={errors.confirmPassword?.message}
         type="password"
+        placeholder="confirm password"
         {...register("confirmPassword")}
       />
 
-      <Button variant="danger" label="Submit" type="submit" />
+      <Button variant="primary" label="Submit" type="submit" />
     </form>
   );
 };

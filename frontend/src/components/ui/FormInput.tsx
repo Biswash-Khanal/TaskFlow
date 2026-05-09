@@ -7,30 +7,35 @@ type FormInputProps = {
   error?: string;
   type?: HTMLInputTypeAttribute;
   required?: boolean;
+  placeholder: string;
 };
 
 const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
-  ({ label, error, type = "text", required = true, ...props }, ref) => {
+  (
+    { label, error, type = "text", required = true, placeholder, ...props },
+    ref,
+  ) => {
     return (
       <div className="mb-4">
-        <label
-          htmlFor={props.name}
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor={props.name} className="block text-sm mb-1">
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="text-danger ml-1">*</span>}
         </label>
         <input
           ref={ref}
           type={type}
           {...props}
+          placeholder={placeholder}
           className={clsx(
-            "block w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
-            error ? "border-red-500" : "border-gray-300",
+            "placeholder:font-extralight placeholder:text-sm placeholder:opacity-50 bg-bg-surface border rounded-md h-9 px-3 focus:border-accent focus:shadow-glow focus:outline-none",
+            error
+              ? "border-danger focus:border-danger focus:shadow-2xl shadow-danger"
+              : "border-border-default",
           )}
         />
+
         {error && (
-          <p className="mt-1 text-xs text-red-600 font-medium">{error}</p>
+          <p className="mt-1 text-xs text-red-600 font-extralight">{error}</p>
         )}
       </div>
     );

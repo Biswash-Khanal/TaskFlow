@@ -2,29 +2,53 @@ import { forwardRef } from "react";
 import clsx from "clsx";
 
 type ButtonProps = {
-  variant?: "default" | "primary" | "secondary" | "danger";
-  label?: string;
+  variant?: "primary" | "secondary" | "ghost" | "danger";
+  size?: "sm" | "md" | "lg";
+  loading?: boolean;
+  disabled?: boolean;
+  label: string;
   className?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = "default", label, className, ...props }, ref) => {
+  (
+    {
+      variant = "primary",
+      size = "md",
+      loading = false,
+      disabled = false,
+      label,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
     const baseStyles =
-      "px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors hover:cursor-pointer";
+      "rounded-md focus:outline-none transition-colors hover:cursor-pointer focus:ring-2 ring-white";
 
     const variantStyles: Record<string, string> = {
-      default:
-        "bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400",
-      primary: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
-      secondary:
-        "bg-purple-600 text-white hover:bg-purple-700 focus:ring-purple-500",
-      danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500",
+      primary: "bg-accent text-white  hover:bg-accent-hover",
+      secondary: "bg-bg-surface border text-primary  hover:bg-bg-hover  ",
+      ghost:
+        "bg-transparent border border-text-primary text-primary hover:bg-bg-hover ",
+      danger: "bg-red-600 text-white hover:bg-red-700 ",
+    };
+    const sizeStyles: Record<string, string> = {
+      sm: "h-7 px-3 text-xs",
+      md: "h-8 px-4 text-sm ",
+      lg: "h-10 px-5 text-base",
     };
 
     return (
       <button
         ref={ref}
-        className={clsx(baseStyles, variantStyles[variant], className)}
+        className={clsx(
+          baseStyles,
+          variantStyles[variant],
+          sizeStyles[size],
+          className,
+        )}
+        // className=""
         {...props}
       >
         {label}

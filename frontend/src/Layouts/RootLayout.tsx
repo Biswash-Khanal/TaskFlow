@@ -4,13 +4,16 @@ import Footer from "../components/Footer";
 
 const RootLayout = () => {
   return (
-        <>
-          <Navbar />
-          <div id="main-container" className="my-10 ">
-            <Outlet />
-          </div>
-          <Footer />
-        </>
+    <>
+      <Navbar />
+      <main
+        id="main-container"
+        className="mt-15 border border-blue-500 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+      >
+        <Outlet />
+      </main>
+      <Footer />
+    </>
   );
 };
 

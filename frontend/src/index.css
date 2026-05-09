@@ -1,2 +1,80 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: Geist;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./assets/fonts/Geist.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Geist-Mono;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./assets/fonts/GeistMono.woff2") format("woff2");
+}
+
+@theme {
+  /*FONTS*/
+  --font-sans: "Geist";
+  --font-mono: "Geist-Mono";
+
+  /*COLORS*/
+  /* Base */
+  --color-bg-base: #0d0d0f; /* Page background */
+  --color-bg-surface: #17171a; /* Cards, panels */
+  --color-bg-overlay: #1f1f24; /* Modals, dropdowns */
+  --color-bg-hover: #26262c; /* Hover states */
+  --color-bg-active: #2e2e36; /* Active / selected */
+  /* Borders */
+  --color-border-subtle: #2a2a32; /* Dividers, table rows */
+  --color-border-default: #3a3a45; /* Input outlines, card edges */
+  --color-border-strong: #52525e; /* Focus rings */
+  /* Text */
+  --color-text-primary: #f0f0f5; /* Headings, body text */
+  --color-text-secondary: #9898a8; /* Labels, metadata */
+  --color-text-muted: #5e5e6e; /* Placeholders, disabled */
+  /* Brand Accent */
+  --color-accent: #6e6af0; /* Primary buttons, links, focus */
+  --color-accent-hover: #7b77f5;
+  --color-accent-muted: rgba(110, 106, 240, 0.15);
+  /* Priority Colors */
+  --color-priority-urgent: #f04e4e;
+  --color-priority-high: #f07a4e;
+  --color-priority-medium: #f0c44e;
+  --color-priority-low: #4ea8f0;
+  --color-priority-none: #52525e;
+  /* Status / Semantic */
+  --color-success: #4ecf7a;
+  --color-warning: #f0c44e;
+  --color-danger: #f04e4e;
+  --color-info: #4ea8f0;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 0 3px rgba(110, 106, 240, 0.3);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans), sans-serif;
+    background-color: var(--color-bg-base);
+    color: var(--color-text-primary);
+    border-color: var(--color-border-default);
+  }
+}
+
+@layer components {
+  .logo {
+    color: var(--color-accent);
+    font-size: 24px;
+  }
+
+  .logo span {
+    color: var(--color-accent-muted);
+  }
+}

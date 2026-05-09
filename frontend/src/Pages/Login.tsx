@@ -33,21 +33,25 @@ const LoginPage = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmitHandler)}>
-      <FormInput
-        label="E-mail"
-        error={errors.email?.message}
-        type="email"
-        {...register("email")}
-      />
-      <FormInput
-        label="Password"
-        error={errors.password?.message}
-        type="password"
-        {...register("password")}
-      />
-      <Button variant="primary" label="Submit" type="submit" />
-    </form>
+    <div className="flex border border-white m-50">
+      <form onSubmit={handleSubmit(onSubmitHandler)}>
+        <FormInput
+          label="E-mail"
+          error={errors.email?.message}
+          type="email"
+          placeholder="Enter your e-mail"
+          {...register("email")}
+        />
+        <FormInput
+          label="Password"
+          error={errors.password?.message}
+          type="password"
+          placeholder="Enter your password"
+          {...register("password")}
+        />
+        <Button variant="primary" label="Submit" type="submit" />
+      </form>
+    </div>
   );
 };
 export default LoginPage;

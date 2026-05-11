@@ -5,6 +5,20 @@ import FormInput from "../components/ui/FormInput";
 import { LoginSchema, type LoginData } from "../schemas/LoginSchema";
 import Button from "../components/ui/Button";
 import { genericSubmitHandler } from "../lib/formSubmitHandler";
+import { axiosInstance } from "../lib/axios";
+import type { AxiosError, AxiosResponse } from "axios";
+import type { ErrorResponse } from "../shared/types/ErrorResponse";
+import toast from "react-hot-toast";
+import type { SuccessResponse } from "../shared/types/SuccessResponse";
+
+interface loginResponseData {
+  id: string;
+  name: string;
+  email: string;
+  avatar_initials: string;
+  created_at: string;
+  updated_at: string;
+}
 
 const LoginPage = () => {
   const {
@@ -16,25 +30,27 @@ const LoginPage = () => {
     resolver: zodResolver(LoginSchema),
   });
 
-  interface ResponseData {
-    id: string;
-    name: string;
-    email: string;
-    avatar_initials: string | null;
-  }
-
   async function onSubmitHandler<T>(data: T) {
-    const result = await genericSubmitHandler<T, ResponseData>(
+    const result = await genericSubmitHandler<T, loginResponseData>(
       data,
       "/auth/login",
     );
-
-    return result;
+    console.log(result);
   }
 
   return (
-    <div className="flex border border-white m-50">
-      <form onSubmit={handleSubmit(onSubmitHandler)}>
+    <div className="flex flex-col border border-border-default rounded-2xl p-10 max-w-md ">
+      <div className="flex flex-col justify-center items-center mb-5">
+        <p className="logo">
+          Task<span>Flow</span>
+        </p>
+        <h1 className="text-3xl font-medium">Welcome Back</h1>
+        <p className="text-text-secondary">Sign in to your account</p>
+      </div>
+      <form
+        onSubmit={handleSubmit(onSubmitHandler)}
+        className="flex flex-col items-center justify-center"
+      >
         <FormInput
           label="E-mail"
           error={errors.email?.message}
@@ -49,7 +65,12 @@ const LoginPage = () => {
           placeholder="Enter your password"
           {...register("password")}
         />
-        <Button variant="primary" label="Submit" type="submit" />
+        <Button
+          className="w-full"
+          variant="primary"
+          label="Submit"
+          type="submit"
+        />
       </form>
     </div>
   );

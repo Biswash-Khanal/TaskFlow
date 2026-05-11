@@ -1,43 +1,32 @@
 import type { AxiosError } from "axios";
 import { axiosInstance } from "./axios";
 import toast from "react-hot-toast";
-
-export type ApiResponse<T = any> =
-  | {
-      success: true;
-      data: T;
-      message: string;
-    }
-  | {
-      success: false;
-      data: null;
-      message: string;
-    };
+import type { SuccessResponse } from "../shared/types/SuccessResponse";
+import type { ErrorResponse } from "../shared/types/ErrorResponse";
 
 export async function genericSubmitHandler<TRequest, TResponseData>(
   data: TRequest,
   path: string,
 ) {
   try {
-    const response = await axiosInstance.post<ApiResponse<TResponseData>>(
+    const response = await axiosInstance.post<SuccessResponse<TResponseData>>(
       path,
       data,
     );
     const result = response.data;
-
-    // Because of the Discriminated Union, checking 'success'
-    // unlocks type-safety for 'data'
-    if (result.success) {
-      toast.success(result.message);
-      return result.data; // This will be typed as TResponseData
-    }
+    toast.success(result.message);
+    return result.data;
   } catch (error) {
-    const err = error as AxiosError<ApiResponse<TResponseData>>;
+    const err = error as AxiosError<ErrorResponse>;
 
-    if (err.response?.data) {
-      toast.error(err.response.data.message);
-    } else {
-      toast.error("No response received. Please contact the administrator.");
+    if (!err.response) {
+      toast.error("Unknown Error Occured!");
+      return;
+    }
+
+    if (err.response.data) {
+      toast.error(err.response.data.detail);
+      return;
     }
     return null;
   }

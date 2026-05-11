@@ -24,13 +24,13 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const baseStyles =
-      "rounded-md focus:outline-none transition-colors hover:cursor-pointer focus:ring-2 ring-white";
+      "rounded-xl focus:outline-none transition-colors hover:cursor-pointer focus:ring-2 ring-white";
 
     const variantStyles: Record<string, string> = {
       primary: "bg-accent text-white  hover:bg-accent-hover",
       secondary: "bg-bg-surface border text-primary  hover:bg-bg-hover  ",
       ghost:
-        "bg-transparent border border-text-primary text-primary hover:bg-bg-hover ",
+        "bg-transparent  text-primary hover:bg-bg-hover ",
       danger: "bg-red-600 text-white hover:bg-red-700 ",
     };
     const sizeStyles: Record<string, string> = {

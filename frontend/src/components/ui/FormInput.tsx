@@ -1,36 +1,36 @@
 import clsx from "clsx";
-import { forwardRef, type HTMLInputTypeAttribute } from "react";
+import React, {
+  forwardRef,
+  type ComponentPropsWithoutRef,
+  type InputHTMLAttributes,
+} from "react";
 
-type FormInputProps = {
+// 1. Extend the standard HTML input props
+interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  name: string;
   error?: string;
-  type?: HTMLInputTypeAttribute;
-  required?: boolean;
-  placeholder: string;
-};
+  // name, type, required, and placeholder are now inherited automatically!
+}
 
 const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
-  (
-    { label, error, type = "text", required = true, placeholder, ...props },
-    ref,
-  ) => {
+  ({ label, error, required = true, className, ...props }, ref) => {
     return (
-      <div className="mb-4">
+      <div className="mb-4 w-full">
         <label htmlFor={props.name} className="block text-sm mb-1">
           {label}
           {required && <span className="text-danger ml-1">*</span>}
         </label>
+
         <input
           ref={ref}
-          type={type}
-          {...props}
-          placeholder={placeholder}
+          id={props.name}
+          {...props} // 2. Spread all other props (name, type, placeholder, etc.)
           className={clsx(
-            "placeholder:font-extralight placeholder:text-sm placeholder:opacity-50 bg-bg-surface border rounded-md h-9 px-3 focus:border-accent focus:shadow-glow focus:outline-none",
+            "w-full placeholder:font-extralight placeholder:text-sm placeholder:opacity-50 bg-bg-surface border rounded-md h-9 px-3 focus:border-accent focus:shadow-glow focus:outline-none",
             error
               ? "border-danger focus:border-danger focus:shadow-2xl shadow-danger"
               : "border-border-default",
+            className, // 3. Allow passing custom classes from the parent
           )}
         />
 
@@ -41,5 +41,7 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
     );
   },
 );
+
+FormInput.displayName = "FormInput";
 
 export default FormInput;
